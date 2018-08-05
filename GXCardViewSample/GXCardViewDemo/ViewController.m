@@ -53,7 +53,7 @@
 #pragma mark - GXCardViewDelegate
 
 - (void)cardView:(GXCardView *)cardView didRemoveLastCell:(GXCardViewCell *)cell forRowAtIndex:(NSInteger)index {
-    [cardView reloadData];
+    [cardView reloadDataAnimated:YES];
 }
 
 - (void)cardView:(GXCardView *)cardView didRemoveCell:(GXCardViewCell *)cell forRowAtIndex:(NSInteger)index {

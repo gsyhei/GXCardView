@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		33CCF00221172A0D00F57890 /* UIView+GXAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 33CCEFFE21172A0D00F57890 /* UIView+GXAdd.m */; };
 		33CCF00321172A0D00F57890 /* GXCardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 33CCF00121172A0D00F57890 /* GXCardView.m */; };
 		33E5C8B6210F7998000BDF6A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E5C8B5210F7998000BDF6A /* AppDelegate.m */; };
 		33E5C8B9210F7998000BDF6A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E5C8B8210F7998000BDF6A /* ViewController.m */; };
@@ -39,9 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		33CCEFFE21172A0D00F57890 /* UIView+GXAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+GXAdd.m"; sourceTree = "<group>"; };
 		33CCEFFF21172A0D00F57890 /* GXCardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GXCardView.h; sourceTree = "<group>"; };
-		33CCF00021172A0D00F57890 /* UIView+GXAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+GXAdd.h"; sourceTree = "<group>"; };
 		33CCF00121172A0D00F57890 /* GXCardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GXCardView.m; sourceTree = "<group>"; };
 		33E5C8B1210F7998000BDF6A /* GXCardViewDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GXCardViewDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		33E5C8B4210F7998000BDF6A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -92,8 +89,6 @@
 		33CCEFFD21172A0D00F57890 /* GXCardView */ = {
 			isa = PBXGroup;
 			children = (
-				33CCF00021172A0D00F57890 /* UIView+GXAdd.h */,
-				33CCEFFE21172A0D00F57890 /* UIView+GXAdd.m */,
 				33CCEFFF21172A0D00F57890 /* GXCardView.h */,
 				33CCF00121172A0D00F57890 /* GXCardView.m */,
 			);
@@ -294,7 +289,6 @@
 				33CCF00321172A0D00F57890 /* GXCardView.m in Sources */,
 				33F40956211490160011A844 /* GXCardItemDemoCell.m in Sources */,
 				33E5C8C4210F799A000BDF6A /* main.m in Sources */,
-				33CCF00221172A0D00F57890 /* UIView+GXAdd.m in Sources */,
 				33E5C8B6210F7998000BDF6A /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

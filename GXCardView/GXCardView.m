@@ -7,7 +7,6 @@
 //
 
 #import "GXCardView.h"
-#import "UIView+GXAdd.h"
 
 #define SCREEN_WIDTH [UIScreen mainScreen].bounds.size.width
 #define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
@@ -125,18 +124,22 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 - (void)didPanStateEnded {
     // 右滑移除
     if (self.currentPoint.x > self.maxRemoveDistance) {
-        CGFloat endCenterX = SCREEN_WIDTH/2 + self.width * 1.5;
+        CGFloat endCenterX = SCREEN_WIDTH/2 + self.frame.size.width * 1.5;
         [UIView animateWithDuration:GX_DefaultDuration animations:^{
-            self.centerX = endCenterX;
+            CGPoint center = self.center;
+            center.x = endCenterX;
+            self.center = center;
         } completion:^(BOOL finished) {
             [self didCellRemoveFromSuperview];
         }];
     }
     // 左滑移除
     else if (self.currentPoint.x < -self.maxRemoveDistance) {
-        CGFloat endCenterX = -(SCREEN_WIDTH/2 + self.width);
+        CGFloat endCenterX = -(SCREEN_WIDTH/2 + self.frame.size.width);
         [UIView animateWithDuration:GX_DefaultDuration animations:^{
-            self.centerX = endCenterX;
+            CGPoint center = self.center;
+            center.x = endCenterX;
+            self.center = center;
         } completion:^(BOOL finished) {
             [self didCellRemoveFromSuperview];
         }];
@@ -185,10 +188,12 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 // 向左边移除动画
 - (void)removeFromSuperviewLeft {
     CGAffineTransform transRotation = CGAffineTransformMakeRotation(-GX_DEGREES_TO_RADIANS(self.maxAngle));
-    CGAffineTransform transform = CGAffineTransformTranslate(transRotation, 0, self.height/4.0);
-    CGFloat endCenterX = -(SCREEN_WIDTH/2 + self.width);
+    CGAffineTransform transform = CGAffineTransformTranslate(transRotation, 0, self.frame.size.height/4.0);
+    CGFloat endCenterX = -(SCREEN_WIDTH/2 + self.frame.size.width);
     [UIView animateWithDuration:GX_DefaultDuration animations:^{
-        self.centerX = endCenterX;
+        CGPoint center = self.center;
+        center.x = endCenterX;
+        self.center = center;
         self.transform = transform;
     } completion:^(BOOL finished) {
         [self didCellRemoveFromSuperview];
@@ -198,10 +203,12 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 // 向右边移除动画
 - (void)removeFromSuperviewRight {
     CGAffineTransform transRotation = CGAffineTransformMakeRotation(GX_DEGREES_TO_RADIANS(self.maxAngle));
-    CGAffineTransform transform = CGAffineTransformTranslate(transRotation, 0, self.height/4.0);
-    CGFloat endCenterX = SCREEN_WIDTH/2 + self.width * 1.5;
+    CGAffineTransform transform = CGAffineTransformTranslate(transRotation, 0, self.frame.size.height/4.0);
+    CGFloat endCenterX = SCREEN_WIDTH/2 + self.frame.size.width * 1.5;
     [UIView animateWithDuration:GX_DefaultDuration animations:^{
-        self.centerX = endCenterX;
+        CGPoint center = self.center;
+        center.x = endCenterX;
+        self.center = center;
         self.transform = transform;
     } completion:^(BOOL finished) {
         [self didCellRemoveFromSuperview];
@@ -261,7 +268,7 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
     self.currentIndex = 0;
     self.currentCount = 0;
     [self.reusableCells removeAllObjects];
-    [self removeAllSubviews];
+    [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
     NSInteger maxCount = [self.dataSource numberOfCountInCardView:self];
     NSInteger showNumber = MIN(maxCount, self.visibleCount);
@@ -281,11 +288,11 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
     NSInteger showIndex = self.visibleCount - 1;
     CGFloat x = self.lineSpacing * showIndex;
     CGFloat y = self.interitemSpacing  * showIndex;
-    CGFloat width = self.width - self.lineSpacing * 2 * showIndex;
-    CGFloat height = self.height - self.interitemSpacing * showIndex;
+    CGFloat width = self.frame.size.width - self.lineSpacing * 2 * showIndex;
+    CGFloat height = self.frame.size.height - self.interitemSpacing * showIndex;
     // 添加最大frame也就是最上层时候的Cell快照
     // 解释下：快照是为了保证scale动画的时候Cell内容不乱/动画更自然
-    cell.frame = CGRectMake(0, 0, self.width, height);
+    cell.frame = CGRectMake(0, 0, self.frame.size.width, height);
     [cell addCellSnapshotView];
     // 重设为初始frame
     cell.frame = CGRectMake(x, y, width, height);
@@ -298,14 +305,14 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 
 /** 更新布局（动画） */
 - (void)updateLayoutVisibleCellsWithAnimated:(BOOL)animated {
-    CGFloat height = self.height - self.interitemSpacing * (self.visibleCount - 1);
+    CGFloat height = self.frame.size.height - self.interitemSpacing * (self.visibleCount - 1);
     NSInteger count = self.visibleCells.count;
     for (NSInteger i = 0; i < count; i ++) {
         // 计算出最终效果的frame
         NSInteger showIndex = count - i - 1;
         CGFloat x = self.lineSpacing * showIndex;
         CGFloat y = self.interitemSpacing  * showIndex;
-        CGFloat width = self.width - 2 * self.lineSpacing * showIndex;
+        CGFloat width = self.frame.size.width - 2 * self.lineSpacing * showIndex;
         CGRect newFrame = CGRectMake(x, y, width, height);
         // 获取当前要显示的的cells
         GXCardViewCell *cell = self.visibleCells[i];
