@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.license      = "MIT"
   s.author       = { "Gin" => "279694479@qq.com" }
   s.platform     = :ios, "7.0"
-  s.source       = { :git => "https://github.com/gsyhei/GXCardView.git", :tag => s.version }
+  s.source       = { :git => "https://github.com/gsyhei/GXCardView.git", :tag => "0.0.1" }
   s.requires_arc = true
   s.source_files = "GXCardView/GXCardView*.{h,m}"
   s.frameworks   = "Foundation","UIKit"
