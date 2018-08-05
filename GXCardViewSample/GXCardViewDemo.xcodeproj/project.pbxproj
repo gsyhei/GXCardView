@@ -92,9 +92,9 @@
 		3326CFB62116D98800061561 /* GXCardView */ = {
 			isa = PBXGroup;
 			children = (
+				3326CFB92116D98800061561 /* UIView+GXAdd.h */,
 				3326CFB72116D98800061561 /* UIView+GXAdd.m */,
 				3326CFB82116D98800061561 /* GXCardView.h */,
-				3326CFB92116D98800061561 /* UIView+GXAdd.h */,
 				3326CFBA2116D98800061561 /* GXCardView.m */,
 			);
 			path = GXCardView;
