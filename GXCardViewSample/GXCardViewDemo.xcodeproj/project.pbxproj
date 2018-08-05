@@ -15,8 +15,8 @@
 		33E5C8C4210F799A000BDF6A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E5C8C3210F799A000BDF6A /* main.m */; };
 		33E5C8CE210F799A000BDF6A /* GXCardViewDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E5C8CD210F799A000BDF6A /* GXCardViewDemoTests.m */; };
 		33E5C8D9210F799A000BDF6A /* GXCardViewDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E5C8D8210F799A000BDF6A /* GXCardViewDemoUITests.m */; };
-		33E5C8EB210F8023000BDF6A /* UIView+Operation.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E5C8EA210F8023000BDF6A /* UIView+Operation.m */; };
 		33EAAC552116B33600F2A7AC /* GXCardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 33EAAC542116B33600F2A7AC /* GXCardView.m */; };
+		33EAAC5B2116CBF600F2A7AC /* UIView+GXAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 33EAAC5A2116CBF600F2A7AC /* UIView+GXAdd.m */; };
 		33F40956211490160011A844 /* GXCardItemDemoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F40954211490160011A844 /* GXCardItemDemoCell.m */; };
 		33F40957211490160011A844 /* GXCardItemDemoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33F40955211490160011A844 /* GXCardItemDemoCell.xib */; };
 /* End PBXBuildFile section */
@@ -55,10 +55,10 @@
 		33E5C8D4210F799A000BDF6A /* GXCardViewDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GXCardViewDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		33E5C8D8210F799A000BDF6A /* GXCardViewDemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GXCardViewDemoUITests.m; sourceTree = "<group>"; };
 		33E5C8DA210F799A000BDF6A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		33E5C8E9210F8023000BDF6A /* UIView+Operation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Operation.h"; sourceTree = "<group>"; };
-		33E5C8EA210F8023000BDF6A /* UIView+Operation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Operation.m"; sourceTree = "<group>"; };
 		33EAAC532116B33600F2A7AC /* GXCardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GXCardView.h; sourceTree = "<group>"; };
 		33EAAC542116B33600F2A7AC /* GXCardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GXCardView.m; sourceTree = "<group>"; };
+		33EAAC592116CBF600F2A7AC /* UIView+GXAdd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+GXAdd.h"; sourceTree = "<group>"; };
+		33EAAC5A2116CBF600F2A7AC /* UIView+GXAdd.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+GXAdd.m"; sourceTree = "<group>"; };
 		33F40953211490160011A844 /* GXCardItemDemoCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GXCardItemDemoCell.h; sourceTree = "<group>"; };
 		33F40954211490160011A844 /* GXCardItemDemoCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GXCardItemDemoCell.m; sourceTree = "<group>"; };
 		33F40955211490160011A844 /* GXCardItemDemoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GXCardItemDemoCell.xib; sourceTree = "<group>"; };
@@ -150,8 +150,8 @@
 		33EAAC522116B33600F2A7AC /* GXCardView */ = {
 			isa = PBXGroup;
 			children = (
-				33E5C8E9210F8023000BDF6A /* UIView+Operation.h */,
-				33E5C8EA210F8023000BDF6A /* UIView+Operation.m */,
+				33EAAC592116CBF600F2A7AC /* UIView+GXAdd.h */,
+				33EAAC5A2116CBF600F2A7AC /* UIView+GXAdd.m */,
 				33EAAC532116B33600F2A7AC /* GXCardView.h */,
 				33EAAC542116B33600F2A7AC /* GXCardView.m */,
 			);
@@ -292,10 +292,10 @@
 			files = (
 				33E5C8B9210F7998000BDF6A /* ViewController.m in Sources */,
 				33EAAC552116B33600F2A7AC /* GXCardView.m in Sources */,
-				33E5C8EB210F8023000BDF6A /* UIView+Operation.m in Sources */,
 				33F40956211490160011A844 /* GXCardItemDemoCell.m in Sources */,
 				33E5C8C4210F799A000BDF6A /* main.m in Sources */,
 				33E5C8B6210F7998000BDF6A /* AppDelegate.m in Sources */,
+				33EAAC5B2116CBF600F2A7AC /* UIView+GXAdd.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
