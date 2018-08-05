@@ -1,5 +1,5 @@
 #
-#  Be sure to run `pod spec lint GXWaterCollectionViewLayout.podspec' to ensure this is a
+#  Be sure to run `pod spec lint GXCardView.podspec' to ensure this is a
 #  valid spec and to remove all comments including this before submitting the spec.
 #
 #  To learn more about Podspec attributes see http://docs.cocoapods.org/specification.html
@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.license      = "MIT"
   s.author       = { "Gin" => "279694479@qq.com" }
   s.platform     = :ios, "7.0"
-  s.source       = { :git => "https://github.com/gsyhei/GXCardView.git", :tag => "0.0.1" }
+  s.source       = { :git => "https://github.com/gsyhei/GXCardView.git", :tag => s.version }
   s.requires_arc = true
   s.source_files = "GXCardView/GXCardView*.{h,m}"
   s.frameworks   = "Foundation","UIKit"
