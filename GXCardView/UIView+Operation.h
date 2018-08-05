@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UIView (Operation)
+@interface UIView (GXAdd)
 
 /**
  *  frame属性添加

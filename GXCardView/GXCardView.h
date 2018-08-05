@@ -68,6 +68,7 @@ typedef NS_ENUM(NSInteger,GXCardCellSwipeDirection) {
 
 /** 重载数据 */
 - (void)reloadData;
+- (void)reloadDataAnimated:(BOOL)animated;
 /** 注册cell */
 - (void)registerNib:(nullable UINib *)nib forCellReuseIdentifier:(NSString *)identifier;
 - (void)registerClass:(nullable Class)cellClass forCellReuseIdentifier:(NSString *)identifier;

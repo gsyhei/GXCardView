@@ -17,8 +17,8 @@
 
 static CGFloat const GX_DefaultDuration    = 0.25f;
 static CGFloat const GX_SpringDuration     = 0.5f;
-static CGFloat const GX_SpringWithDamping  = 0.7f;
-static CGFloat const GX_SpringVelocity     = 1.0f;
+static CGFloat const GX_SpringWithDamping  = 0.5f;
+static CGFloat const GX_SpringVelocity     = 0.8f;
 
 @class GXCardViewCell;
 @protocol GXCardViewCellDelagate <NSObject>
@@ -254,6 +254,10 @@ static CGFloat const GX_SpringVelocity     = 1.0f;
 }
 
 - (void)reloadData {
+    [self reloadDataAnimated:NO];
+}
+
+- (void)reloadDataAnimated:(BOOL)animated {
     self.currentIndex = 0;
     self.currentCount = 0;
     [self.reusableCells removeAllObjects];
@@ -264,26 +268,29 @@ static CGFloat const GX_SpringVelocity     = 1.0f;
     for (int i = 0; i < showNumber; i++) {
         [self createCardViewCellWithIndex:i];
     }
-    [self updateLayoutVisibleCellsWithAnimated:NO];
+    [self updateLayoutVisibleCellsWithAnimated:animated];
 }
 
 /** 创建新的cell */
 - (void)createCardViewCellWithIndex:(NSInteger)index {
     GXCardViewCell *cell = [self.dataSource cardView:self cellForRowAtIndex:index];
-    cell.maxAngle = self.maxAngle;
     cell.maxRemoveDistance = self.maxRemoveDistance;
+    cell.maxAngle = self.maxAngle;
+    cell.delegate = self;
+
     NSInteger showIndex = self.visibleCount - 1;
     CGFloat x = self.lineSpacing * showIndex;
     CGFloat y = self.interitemSpacing  * showIndex;
     CGFloat width = self.width - self.lineSpacing * 2 * showIndex;
     CGFloat height = self.height - self.interitemSpacing * showIndex;
+    // 添加最大frame也就是最上层时候的Cell快照
+    // 解释下：快照是为了保证scale动画的时候Cell内容不乱/动画更自然
     cell.frame = CGRectMake(0, 0, self.width, height);
     [cell addCellSnapshotView];
+    // 重设为初始frame
     cell.frame = CGRectMake(x, y, width, height);
     cell.userInteractionEnabled = NO;
-    cell.delegate = self;
     [self insertSubview:cell atIndex:0];
-    cell.center = CGPointMake(self.width/2, self.height/2);
 
     self.currentIndex = index;
     self.currentCount ++;
@@ -294,14 +301,15 @@ static CGFloat const GX_SpringVelocity     = 1.0f;
     CGFloat height = self.height - self.interitemSpacing * (self.visibleCount - 1);
     NSInteger count = self.visibleCells.count;
     for (NSInteger i = 0; i < count; i ++) {
+        // 计算出最终效果的frame
         NSInteger showIndex = count - i - 1;
         CGFloat x = self.lineSpacing * showIndex;
         CGFloat y = self.interitemSpacing  * showIndex;
-        CGFloat width = self.width - self.lineSpacing * 2 * showIndex;
+        CGFloat width = self.width - 2 * self.lineSpacing * showIndex;
         CGRect newFrame = CGRectMake(x, y, width, height);
+        // 获取当前要显示的的cells
         GXCardViewCell *cell = self.visibleCells[i];
-        
-        //显示的最后一个为最上层的cell
+        // 显示的最后一个为最上层的cell
         BOOL isLast = (i == (count - 1));
         if (isLast) {
             cell.userInteractionEnabled = YES;
