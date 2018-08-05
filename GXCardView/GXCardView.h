@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UIView+GXAdd.h"
 
 typedef NS_ENUM(NSInteger,GXCardCellSwipeDirection) {
     GXCardCellSwipeDirectionLeft = 0,
