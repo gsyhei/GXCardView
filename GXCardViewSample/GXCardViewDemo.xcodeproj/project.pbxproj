@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3326CFBB2116D98800061561 /* UIView+GXAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 3326CFB72116D98800061561 /* UIView+GXAdd.m */; };
+		3326CFBC2116D98900061561 /* GXCardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3326CFBA2116D98800061561 /* GXCardView.m */; };
 		33E5C8B6210F7998000BDF6A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E5C8B5210F7998000BDF6A /* AppDelegate.m */; };
 		33E5C8B9210F7998000BDF6A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E5C8B8210F7998000BDF6A /* ViewController.m */; };
 		33E5C8BC210F7998000BDF6A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 33E5C8BA210F7998000BDF6A /* Main.storyboard */; };
@@ -15,8 +17,6 @@
 		33E5C8C4210F799A000BDF6A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E5C8C3210F799A000BDF6A /* main.m */; };
 		33E5C8CE210F799A000BDF6A /* GXCardViewDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E5C8CD210F799A000BDF6A /* GXCardViewDemoTests.m */; };
 		33E5C8D9210F799A000BDF6A /* GXCardViewDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 33E5C8D8210F799A000BDF6A /* GXCardViewDemoUITests.m */; };
-		33EAAC552116B33600F2A7AC /* GXCardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 33EAAC542116B33600F2A7AC /* GXCardView.m */; };
-		33EAAC5B2116CBF600F2A7AC /* UIView+GXAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = 33EAAC5A2116CBF600F2A7AC /* UIView+GXAdd.m */; };
 		33F40956211490160011A844 /* GXCardItemDemoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 33F40954211490160011A844 /* GXCardItemDemoCell.m */; };
 		33F40957211490160011A844 /* GXCardItemDemoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33F40955211490160011A844 /* GXCardItemDemoCell.xib */; };
 /* End PBXBuildFile section */
@@ -39,6 +39,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3326CFB72116D98800061561 /* UIView+GXAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+GXAdd.m"; sourceTree = "<group>"; };
+		3326CFB82116D98800061561 /* GXCardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GXCardView.h; sourceTree = "<group>"; };
+		3326CFB92116D98800061561 /* UIView+GXAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+GXAdd.h"; sourceTree = "<group>"; };
+		3326CFBA2116D98800061561 /* GXCardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GXCardView.m; sourceTree = "<group>"; };
 		33E5C8B1210F7998000BDF6A /* GXCardViewDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GXCardViewDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		33E5C8B4210F7998000BDF6A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		33E5C8B5210F7998000BDF6A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -55,10 +59,6 @@
 		33E5C8D4210F799A000BDF6A /* GXCardViewDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GXCardViewDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		33E5C8D8210F799A000BDF6A /* GXCardViewDemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GXCardViewDemoUITests.m; sourceTree = "<group>"; };
 		33E5C8DA210F799A000BDF6A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		33EAAC532116B33600F2A7AC /* GXCardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GXCardView.h; sourceTree = "<group>"; };
-		33EAAC542116B33600F2A7AC /* GXCardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GXCardView.m; sourceTree = "<group>"; };
-		33EAAC592116CBF600F2A7AC /* UIView+GXAdd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+GXAdd.h"; sourceTree = "<group>"; };
-		33EAAC5A2116CBF600F2A7AC /* UIView+GXAdd.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+GXAdd.m"; sourceTree = "<group>"; };
 		33F40953211490160011A844 /* GXCardItemDemoCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GXCardItemDemoCell.h; sourceTree = "<group>"; };
 		33F40954211490160011A844 /* GXCardItemDemoCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GXCardItemDemoCell.m; sourceTree = "<group>"; };
 		33F40955211490160011A844 /* GXCardItemDemoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GXCardItemDemoCell.xib; sourceTree = "<group>"; };
@@ -89,6 +89,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3326CFB62116D98800061561 /* GXCardView */ = {
+			isa = PBXGroup;
+			children = (
+				3326CFB72116D98800061561 /* UIView+GXAdd.m */,
+				3326CFB82116D98800061561 /* GXCardView.h */,
+				3326CFB92116D98800061561 /* UIView+GXAdd.h */,
+				3326CFBA2116D98800061561 /* GXCardView.m */,
+			);
+			path = GXCardView;
+			sourceTree = "<group>";
+		};
 		33E5C8A8210F7998000BDF6A = {
 			isa = PBXGroup;
 			children = (
@@ -112,7 +123,7 @@
 		33E5C8B3210F7998000BDF6A /* GXCardViewDemo */ = {
 			isa = PBXGroup;
 			children = (
-				33EAAC522116B33600F2A7AC /* GXCardView */,
+				3326CFB62116D98800061561 /* GXCardView */,
 				33F40953211490160011A844 /* GXCardItemDemoCell.h */,
 				33F40954211490160011A844 /* GXCardItemDemoCell.m */,
 				33F40955211490160011A844 /* GXCardItemDemoCell.xib */,
@@ -145,18 +156,6 @@
 				33E5C8DA210F799A000BDF6A /* Info.plist */,
 			);
 			path = GXCardViewDemoUITests;
-			sourceTree = "<group>";
-		};
-		33EAAC522116B33600F2A7AC /* GXCardView */ = {
-			isa = PBXGroup;
-			children = (
-				33EAAC592116CBF600F2A7AC /* UIView+GXAdd.h */,
-				33EAAC5A2116CBF600F2A7AC /* UIView+GXAdd.m */,
-				33EAAC532116B33600F2A7AC /* GXCardView.h */,
-				33EAAC542116B33600F2A7AC /* GXCardView.m */,
-			);
-			name = GXCardView;
-			path = ../../GXCardView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -291,11 +290,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				33E5C8B9210F7998000BDF6A /* ViewController.m in Sources */,
-				33EAAC552116B33600F2A7AC /* GXCardView.m in Sources */,
+				3326CFBC2116D98900061561 /* GXCardView.m in Sources */,
 				33F40956211490160011A844 /* GXCardItemDemoCell.m in Sources */,
 				33E5C8C4210F799A000BDF6A /* main.m in Sources */,
+				3326CFBB2116D98800061561 /* UIView+GXAdd.m in Sources */,
 				33E5C8B6210F7998000BDF6A /* AppDelegate.m in Sources */,
-				33EAAC5B2116CBF600F2A7AC /* UIView+GXAdd.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
