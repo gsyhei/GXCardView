@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="Wf6-Re-hSo" customClass="GXCardItemDemoCell">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="349"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v5B-jF-baE">
+                    <rect key="frame" x="152.5" y="37" width="70" height="70"/>
+                    <color key="backgroundColor" red="0.88235294119999996" green="0.88235294119999996" blue="0.88235294119999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="70" id="5Br-yZ-KsN"/>
+                        <constraint firstAttribute="height" constant="70" id="Cyp-FV-qgn"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="阿萨德黑胡椒卡萨丁框架" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Juh-Pv-54P">
+                    <rect key="frame" x="20" y="127" width="335" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="tFn-yL-HXI"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="阿萨德黑胡椒卡萨丁框架" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tkl-bg-SOa">
+                    <rect key="frame" x="46" y="167" width="248" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="XDP-S0-SKR"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="阿萨德黑胡椒卡萨丁框架" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nkd-p5-QL1">
+                    <rect key="frame" x="46" y="212" width="248" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="248" id="TM9-iM-TW3"/>
+                        <constraint firstAttribute="height" constant="21" id="qum-HM-EfL"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="阿萨德黑胡椒卡萨丁框架" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yj8-ct-njr">
+                    <rect key="frame" x="82" y="249" width="248" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="a0o-qc-GpR"/>
+                        <constraint firstAttribute="width" constant="248" id="aFq-8u-Fa5"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fc9-Wg-R9z">
+                    <rect key="frame" x="166" y="317" width="42" height="21"/>
+                    <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="42" id="FBS-Er-iaP"/>
+                        <constraint firstAttribute="height" constant="21" id="yYg-2F-5lZ"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="nkd-p5-QL1" firstAttribute="leading" secondItem="Wf6-Re-hSo" secondAttribute="leading" constant="46" id="3MN-ej-dx7"/>
+                <constraint firstItem="Juh-Pv-54P" firstAttribute="leading" secondItem="Wf6-Re-hSo" secondAttribute="leading" constant="20" id="485-Wh-3i0"/>
+                <constraint firstAttribute="bottom" secondItem="fc9-Wg-R9z" secondAttribute="bottom" constant="11" id="7nQ-YE-MEM"/>
+                <constraint firstItem="v5B-jF-baE" firstAttribute="top" secondItem="Wf6-Re-hSo" secondAttribute="top" constant="37" id="HTz-2e-Icc"/>
+                <constraint firstItem="v5B-jF-baE" firstAttribute="centerX" secondItem="Wf6-Re-hSo" secondAttribute="centerX" id="MY6-aW-vGg"/>
+                <constraint firstItem="yj8-ct-njr" firstAttribute="top" secondItem="nkd-p5-QL1" secondAttribute="bottom" constant="16" id="PrU-6z-jOx"/>
+                <constraint firstItem="fc9-Wg-R9z" firstAttribute="centerX" secondItem="Wf6-Re-hSo" secondAttribute="centerX" id="Pxy-EX-3Qo"/>
+                <constraint firstItem="tkl-bg-SOa" firstAttribute="leading" secondItem="Wf6-Re-hSo" secondAttribute="leading" constant="46" id="UiZ-b9-1tG"/>
+                <constraint firstItem="tkl-bg-SOa" firstAttribute="top" secondItem="Juh-Pv-54P" secondAttribute="bottom" constant="19" id="isU-KW-yoj"/>
+                <constraint firstItem="nkd-p5-QL1" firstAttribute="top" secondItem="tkl-bg-SOa" secondAttribute="bottom" constant="24" id="kRX-SX-Q3N"/>
+                <constraint firstItem="Juh-Pv-54P" firstAttribute="top" secondItem="v5B-jF-baE" secondAttribute="bottom" constant="20" id="lr9-Al-OC2"/>
+                <constraint firstAttribute="trailing" secondItem="Juh-Pv-54P" secondAttribute="trailing" constant="20" id="odT-oa-cKd"/>
+                <constraint firstAttribute="trailing" secondItem="tkl-bg-SOa" secondAttribute="trailing" constant="81" id="qK1-Rc-6c0"/>
+                <constraint firstAttribute="trailing" secondItem="yj8-ct-njr" secondAttribute="trailing" constant="45" id="vn3-cW-GdH"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="numberLabel" destination="fc9-Wg-R9z" id="fXg-dM-yUa"/>
+            </connections>
+            <point key="canvasLocation" x="135" y="-54"/>
+        </view>
+    </objects>
+</document>
