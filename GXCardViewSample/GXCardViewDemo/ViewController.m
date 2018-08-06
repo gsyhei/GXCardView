@@ -57,15 +57,15 @@
 }
 
 - (void)cardView:(GXCardView *)cardView didRemoveCell:(GXCardViewCell *)cell forRowAtIndex:(NSInteger)index {
-
+    NSLog(@"didRemoveCell forRowAtIndex = %ld", index);
 }
 
 - (void)cardView:(GXCardView *)cardView didDisplayCell:(GXCardViewCell *)cell forRowAtIndex:(NSInteger)index {
-    
+    NSLog(@"didDisplayCell forRowAtIndex = %ld", index);
 }
 
 - (void)cardView:(GXCardView *)cardView didMoveCell:(GXCardViewCell *)cell forMovePoint:(CGPoint)point {
-    NSLog(@"move point = %@", NSStringFromCGPoint(point));
+//    NSLog(@"move point = %@", NSStringFromCGPoint(point));
 }
 
 #pragma mark -

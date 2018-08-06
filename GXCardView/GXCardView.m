@@ -27,6 +27,7 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 @end
 
 @interface GXCardViewCell()
+@property (nonatomic, strong) IBOutlet UIView *contentView;
 @property (nonatomic, assign) CGFloat maxAngle;
 @property (nonatomic, assign) CGFloat maxRemoveDistance;
 @property (nonatomic, assign) CGPoint currentPoint;
@@ -80,7 +81,12 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 }
 
 - (void)setupView {
-    self.clipsToBounds = YES;
+    if (!_contentView) {
+        _contentView = [[UIView alloc] initWithFrame:self.bounds];
+        _contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+        [self addSubview:_contentView];
+    }
+    self.contentView.clipsToBounds = YES;
     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureRecognizer:)];
     [self addGestureRecognizer:pan];
 }
@@ -124,24 +130,36 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 - (void)didPanStateEnded {
     // 右滑移除
     if (self.currentPoint.x > self.maxRemoveDistance) {
+        __block UIView *snapshotView = [self snapshotViewAfterScreenUpdates:YES];
+        snapshotView.frame = self.frame;
+        snapshotView.transform = self.transform;
+        [self.superview.superview addSubview:snapshotView];
+        [self didCellRemoveFromSuperview];
+
         CGFloat endCenterX = SCREEN_WIDTH/2 + self.frame.size.width * 1.5;
         [UIView animateWithDuration:GX_DefaultDuration animations:^{
             CGPoint center = self.center;
             center.x = endCenterX;
-            self.center = center;
+            snapshotView.center = center;
         } completion:^(BOOL finished) {
-            [self didCellRemoveFromSuperview];
+            [snapshotView removeFromSuperview];
         }];
     }
     // 左滑移除
     else if (self.currentPoint.x < -self.maxRemoveDistance) {
+        __block UIView *snapshotView = [self snapshotViewAfterScreenUpdates:YES];
+        snapshotView.frame = self.frame;
+        snapshotView.transform = self.transform;
+        [self.superview.superview addSubview:snapshotView];
+        [self didCellRemoveFromSuperview];
+
         CGFloat endCenterX = -(SCREEN_WIDTH/2 + self.frame.size.width);
         [UIView animateWithDuration:GX_DefaultDuration animations:^{
             CGPoint center = self.center;
             center.x = endCenterX;
-            self.center = center;
+            snapshotView.center = center;
         } completion:^(BOOL finished) {
-            [self didCellRemoveFromSuperview];
+            [snapshotView removeFromSuperview];
         }];
     }
     // 滑动距离不够归位
@@ -187,31 +205,40 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 
 // 向左边移除动画
 - (void)removeFromSuperviewLeft {
+    __block UIView *snapshotView = [self snapshotViewAfterScreenUpdates:YES];
+    [self.superview.superview addSubview:snapshotView];
+    [self didCellRemoveFromSuperview];
+
     CGAffineTransform transRotation = CGAffineTransformMakeRotation(-GX_DEGREES_TO_RADIANS(self.maxAngle));
     CGAffineTransform transform = CGAffineTransformTranslate(transRotation, 0, self.frame.size.height/4.0);
     CGFloat endCenterX = -(SCREEN_WIDTH/2 + self.frame.size.width);
     [UIView animateWithDuration:GX_DefaultDuration animations:^{
         CGPoint center = self.center;
         center.x = endCenterX;
-        self.center = center;
-        self.transform = transform;
+        snapshotView.center = center;
+        snapshotView.transform = transform;
     } completion:^(BOOL finished) {
-        [self didCellRemoveFromSuperview];
+        [snapshotView removeFromSuperview];
     }];
 }
 
 // 向右边移除动画
 - (void)removeFromSuperviewRight {
+    __block UIView *snapshotView = [self snapshotViewAfterScreenUpdates:YES];
+    snapshotView.frame = self.frame;
+    [self.superview.superview addSubview:snapshotView];
+    [self didCellRemoveFromSuperview];
+    
     CGAffineTransform transRotation = CGAffineTransformMakeRotation(GX_DEGREES_TO_RADIANS(self.maxAngle));
     CGAffineTransform transform = CGAffineTransformTranslate(transRotation, 0, self.frame.size.height/4.0);
     CGFloat endCenterX = SCREEN_WIDTH/2 + self.frame.size.width * 1.5;
     [UIView animateWithDuration:GX_DefaultDuration animations:^{
         CGPoint center = self.center;
         center.x = endCenterX;
-        self.center = center;
-        self.transform = transform;
+        snapshotView.center = center;
+        snapshotView.transform = transform;
     } completion:^(BOOL finished) {
-        [self didCellRemoveFromSuperview];
+        [snapshotView removeFromSuperview];
     }];
 }
 
@@ -220,15 +247,14 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 @interface GXCardView()<GXCardViewCellDelagate>
-
+/** cell容器 */
+@property (nonatomic, strong) UIView *containerView;
 /** 注册cell相关 */
 @property (nonatomic, strong) UINib *nib;
 @property (nonatomic,   copy) Class cellClass;
 @property (nonatomic,   copy) NSString *identifier;
-/** 当前索引 */
+/** 当前索引(已显示的最大索引) */
 @property (nonatomic, assign) NSInteger currentIndex;
-/** 当前已显示过的数量 */
-@property (nonatomic, assign) NSInteger currentCount;
 /** 当前可视cells */
 @property (nonatomic, strong) NSArray<__kindof GXCardViewCell *> *visibleCells;
 /** 重用卡片数组  */
@@ -260,15 +286,23 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
     _reusableCells     = [NSMutableArray array];
 }
 
+- (UIView *)containerView {
+    if (!_containerView) {
+        _containerView = [[UIView alloc] initWithFrame:self.bounds];
+        _containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+        [self addSubview:_containerView];
+    }
+    return _containerView;
+}
+
 - (void)reloadData {
     [self reloadDataAnimated:NO];
 }
 
 - (void)reloadDataAnimated:(BOOL)animated {
     self.currentIndex = 0;
-    self.currentCount = 0;
     [self.reusableCells removeAllObjects];
-    [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [self.containerView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
     NSInteger maxCount = [self.dataSource numberOfCountInCardView:self];
     NSInteger showNumber = MIN(maxCount, self.visibleCount);
@@ -297,10 +331,9 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
     // 重设为初始frame
     cell.frame = CGRectMake(x, y, width, height);
     cell.userInteractionEnabled = NO;
-    [self insertSubview:cell atIndex:0];
+    [self.containerView insertSubview:cell atIndex:0];
 
     self.currentIndex = index;
-    self.currentCount ++;
 }
 
 /** 更新布局（动画） */
@@ -321,7 +354,7 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
         if (isLast) {
             cell.userInteractionEnabled = YES;
             if ([self.delegate respondsToSelector:@selector(cardView:didDisplayCell:forRowAtIndex:)]) {
-                [self.delegate cardView:self didDisplayCell:cell forRowAtIndex:self.currentIndex];
+                [self.delegate cardView:self didDisplayCell:cell forRowAtIndex:(self.currentIndex-i)];
             }
         }
         if (animated) {
@@ -343,9 +376,14 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
     }];
 }
 
+/** 当前最上层索引 */
+- (NSInteger)currentFirstIndex {
+    return self.currentIndex - self.visibleCells.count + 1;
+}
+
 /** 可视cells */
 - (NSArray<GXCardViewCell *> *)visibleCells {
-    return self.subviews;
+    return self.containerView.subviews;
 }
 
 /** 注册cell */
@@ -411,7 +449,7 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
     
     // 通知代理 移除了当前cell
     if ([self.delegate respondsToSelector:@selector(cardView:didRemoveCell:forRowAtIndex:)]) {
-        [self.delegate cardView:self didRemoveCell:cell forRowAtIndex:self.currentIndex];
+        [self.delegate cardView:self didRemoveCell:cell forRowAtIndex:self.currentFirstIndex];
     }
 
     NSInteger count = [self.dataSource numberOfCountInCardView:self];
@@ -423,7 +461,7 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
         return;
     }
     // 当前数据源还有数据 继续创建cell
-    if (self.currentCount < count) {
+    if (self.currentIndex < count - 1) {
         [self createCardViewCellWithIndex:(self.currentIndex + 1)];
     }
     // 更新布局

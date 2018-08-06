@@ -14,6 +14,8 @@ typedef NS_ENUM(NSInteger,GXCardCellSwipeDirection) {
 };
 
 @interface GXCardViewCell : UIView
+/** 内容视图 */
+@property (nonatomic, readonly) IBOutlet UIView *contentView;
 /** 重用标识 */
 @property (nonatomic, copy) NSString *reuseIdentifier;
 /** 指定初始化方法 */
@@ -50,6 +52,8 @@ typedef NS_ENUM(NSInteger,GXCardCellSwipeDirection) {
 
 /** 当前可视cells */
 @property (nonatomic, readonly) NSArray<__kindof GXCardViewCell *> *visibleCells;
+/** 当前显示最上层索引 */
+@property (nonatomic, readonly) NSInteger currentFirstIndex;
 /** 数据源 */
 @property (nonatomic,   weak) id<GXCardViewDataSource> dataSource;
 /** 代理 */
