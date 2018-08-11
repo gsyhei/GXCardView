@@ -119,7 +119,7 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
             break;
         case UIGestureRecognizerStateCancelled:
         case UIGestureRecognizerStateFailed:
-             [self restoreCellLocation];
+            [self restoreCellLocation];
             break;
         default:
             break;
@@ -131,11 +131,10 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
     // 右滑移除
     if (self.currentPoint.x > self.maxRemoveDistance) {
         __block UIView *snapshotView = [self snapshotViewAfterScreenUpdates:YES];
-        snapshotView.frame = self.frame;
         snapshotView.transform = self.transform;
         [self.superview.superview addSubview:snapshotView];
         [self didCellRemoveFromSuperview];
-
+        
         CGFloat endCenterX = SCREEN_WIDTH/2 + self.frame.size.width * 1.5;
         [UIView animateWithDuration:GX_DefaultDuration animations:^{
             CGPoint center = self.center;
@@ -148,11 +147,10 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
     // 左滑移除
     else if (self.currentPoint.x < -self.maxRemoveDistance) {
         __block UIView *snapshotView = [self snapshotViewAfterScreenUpdates:YES];
-        snapshotView.frame = self.frame;
         snapshotView.transform = self.transform;
         [self.superview.superview addSubview:snapshotView];
         [self didCellRemoveFromSuperview];
-
+        
         CGFloat endCenterX = -(SCREEN_WIDTH/2 + self.frame.size.width);
         [UIView animateWithDuration:GX_DefaultDuration animations:^{
             CGPoint center = self.center;
@@ -208,7 +206,7 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
     __block UIView *snapshotView = [self snapshotViewAfterScreenUpdates:YES];
     [self.superview.superview addSubview:snapshotView];
     [self didCellRemoveFromSuperview];
-
+    
     CGAffineTransform transRotation = CGAffineTransformMakeRotation(-GX_DEGREES_TO_RADIANS(self.maxAngle));
     CGAffineTransform transform = CGAffineTransformTranslate(transRotation, 0, self.frame.size.height/4.0);
     CGFloat endCenterX = -(SCREEN_WIDTH/2 + self.frame.size.width);
@@ -318,7 +316,7 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
     cell.maxRemoveDistance = self.maxRemoveDistance;
     cell.maxAngle = self.maxAngle;
     cell.delegate = self;
-
+    
     NSInteger showIndex = self.visibleCount - 1;
     CGFloat x = self.lineSpacing * showIndex;
     CGFloat y = self.interitemSpacing  * showIndex;
@@ -332,7 +330,7 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
     cell.frame = CGRectMake(x, y, width, height);
     cell.userInteractionEnabled = NO;
     [self.containerView insertSubview:cell atIndex:0];
-
+    
     self.currentIndex = index;
 }
 
@@ -358,6 +356,7 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
             }
         }
         if (animated) {
+            cell.contentView.hidden = YES;
             [self updateConstraintsCell:cell frame:newFrame isLast:isLast];
         } else {
             cell.frame = newFrame;
@@ -366,10 +365,10 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 }
 
 - (void)updateConstraintsCell:(GXCardViewCell*)cell frame:(CGRect)frame isLast:(BOOL)isLast {
-    [UIView animateWithDuration:GX_DefaultDuration animations:^{
+    [UIView animateWithDuration:GX_DefaultDuration * 0.7 animations:^{
         cell.frame = frame;
-        [self layoutIfNeeded];
     } completion:^(BOOL finished) {
+        cell.contentView.hidden = NO;
         if (isLast) {
             [cell removeCellSnapshotView];
         }
@@ -451,7 +450,7 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
     if ([self.delegate respondsToSelector:@selector(cardView:didRemoveCell:forRowAtIndex:)]) {
         [self.delegate cardView:self didRemoveCell:cell forRowAtIndex:self.currentFirstIndex];
     }
-
+    
     NSInteger count = [self.dataSource numberOfCountInCardView:self];
     // 移除后的卡片是最后一张(没有更多)
     if(self.visibleCells.count == 0) { // 只有最后一张卡片的时候
@@ -475,3 +474,4 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 }
 
 @end
+
