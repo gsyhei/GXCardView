@@ -18,14 +18,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    self.view.backgroundColor = [UIColor colorWithWhite:0.94 alpha:1];
+    //    self.view.backgroundColor = [UIColor colorWithWhite:0.94 alpha:1];
     
     self.cardView.dataSource = self;
     self.cardView.delegate = self;
-    self.cardView.visibleCount = 4;
+    self.cardView.visibleCount = 5;
     self.cardView.lineSpacing = 15.0;
-    self.cardView.interitemSpacing = 15.0;
-    self.cardView.maxAngle = 30.0;
+    self.cardView.interitemSpacing = 10.0;
+    self.cardView.maxAngle = 15.0;
     self.cardView.maxRemoveDistance = 100.0;
     [self.cardView registerNib:[UINib nibWithNibName:NSStringFromClass([GXCardItemDemoCell class]) bundle:nil] forCellReuseIdentifier:@"GXCardViewCell"];
     [self.cardView reloadData];
@@ -65,7 +65,7 @@
 }
 
 - (void)cardView:(GXCardView *)cardView didMoveCell:(GXCardViewCell *)cell forMovePoint:(CGPoint)point {
-//    NSLog(@"move point = %@", NSStringFromCGPoint(point));
+    //    NSLog(@"move point = %@", NSStringFromCGPoint(point));
 }
 
 #pragma mark -

@@ -66,9 +66,7 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
     [self removeCellSnapshotView];
     [self setNeedsLayout];
     [self layoutIfNeeded];
-    self.clipsToBounds = YES;
     UIView *snapshotView = [self snapshotViewAfterScreenUpdates:YES];
-    self.clipsToBounds = NO;
     snapshotView.tag = GX_SNAPSHOTVIEW_TAG;
     snapshotView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     [self addSubview:snapshotView];
@@ -95,32 +93,32 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 
 - (void)panGestureRecognizer:(UIPanGestureRecognizer*)pan {
     switch (pan.state) {
-            case UIGestureRecognizerStateBegan:
+        case UIGestureRecognizerStateBegan:
             self.currentPoint = CGPointZero;
             break;
-            case UIGestureRecognizerStateChanged: {
-                CGPoint movePoint = [pan translationInView:pan.view];
-                self.currentPoint = CGPointMake(self.currentPoint.x + movePoint.x , self.currentPoint.y + movePoint.y);
-                
-                CGFloat moveScale = self.currentPoint.x / self.maxRemoveDistance;
-                if (ABS(moveScale) > 1.0) {
-                    moveScale = (moveScale > 0) ? 1.0 : -1.0;
-                }
-                CGFloat angle = GX_DEGREES_TO_RADIANS(self.maxAngle) * moveScale;
-                CGAffineTransform transRotation = CGAffineTransformMakeRotation(angle);
-                self.transform = CGAffineTransformTranslate(transRotation, self.currentPoint.x, self.currentPoint.y);
-                
-                if (self.delegate && [self.delegate respondsToSelector:@selector(cardViewCellDidMoveFromSuperView:forMovePoint:)]) {
-                    [self.delegate cardViewCellDidMoveFromSuperView:self forMovePoint:self.currentPoint];
-                }
-                [pan setTranslation:CGPointZero inView:pan.view];
+        case UIGestureRecognizerStateChanged: {
+            CGPoint movePoint = [pan translationInView:pan.view];
+            self.currentPoint = CGPointMake(self.currentPoint.x + movePoint.x , self.currentPoint.y + movePoint.y);
+            
+            CGFloat moveScale = self.currentPoint.x / self.maxRemoveDistance;
+            if (ABS(moveScale) > 1.0) {
+                moveScale = (moveScale > 0) ? 1.0 : -1.0;
             }
+            CGFloat angle = GX_DEGREES_TO_RADIANS(self.maxAngle) * moveScale;
+            CGAffineTransform transRotation = CGAffineTransformMakeRotation(angle);
+            self.transform = CGAffineTransformTranslate(transRotation, self.currentPoint.x, self.currentPoint.y);
+            
+            if (self.delegate && [self.delegate respondsToSelector:@selector(cardViewCellDidMoveFromSuperView:forMovePoint:)]) {
+                [self.delegate cardViewCellDidMoveFromSuperView:self forMovePoint:self.currentPoint];
+            }
+            [pan setTranslation:CGPointZero inView:pan.view];
+        }
             break;
-            case UIGestureRecognizerStateEnded:
+        case UIGestureRecognizerStateEnded:
             [self didPanStateEnded];
             break;
-            case UIGestureRecognizerStateCancelled:
-            case UIGestureRecognizerStateFailed:
+        case UIGestureRecognizerStateCancelled:
+        case UIGestureRecognizerStateFailed:
             [self restoreCellLocation];
             break;
         default:
@@ -190,13 +188,13 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 
 - (void)removeFromSuperviewSwipe:(GXCardCellSwipeDirection)direction {
     switch (direction) {
-            case GXCardCellSwipeDirectionLeft: {
-                [self removeFromSuperviewLeft];
-            }
+        case GXCardCellSwipeDirectionLeft: {
+            [self removeFromSuperviewLeft];
+        }
             break;
-            case GXCardCellSwipeDirectionRight: {
-                [self removeFromSuperviewRight];
-            }
+        case GXCardCellSwipeDirectionRight: {
+            [self removeFromSuperviewRight];
+        }
             break;
         default:
             break;
@@ -315,41 +313,50 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 /** 创建新的cell */
 - (void)createCardViewCellWithIndex:(NSInteger)index {
     GXCardViewCell *cell = [self.dataSource cardView:self cellForRowAtIndex:index];
+    cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     cell.maxRemoveDistance = self.maxRemoveDistance;
     cell.maxAngle = self.maxAngle;
     cell.delegate = self;
-    
-    NSInteger showIndex = self.visibleCount - 1;
-    CGFloat x = self.lineSpacing * showIndex;
-    CGFloat y = self.interitemSpacing  * showIndex;
-    CGFloat width = self.frame.size.width - self.lineSpacing * 2 * showIndex;
-    CGFloat height = self.frame.size.height - self.interitemSpacing * showIndex;
-    // 添加最大frame也就是最上层时候的Cell快照
-    // 解释下：快照是为了保证scale动画的时候Cell内容不乱/动画更自然
-    cell.frame = CGRectMake(0, 0, self.frame.size.width, height);
-    [cell addCellSnapshotView];
-    // 重设为初始frame
-    cell.frame = CGRectMake(x, y, width, height);
     cell.userInteractionEnabled = NO;
-    [self.containerView insertSubview:cell atIndex:0];
+    NSInteger showCount = self.visibleCount - 1;
+    CGFloat width = self.frame.size.width;
+    CGFloat height = self.frame.size.height - (showCount * self.interitemSpacing);
+    cell.frame = CGRectMake(0, 0, width, height);
     
+    CGFloat minWidth = self.frame.size.width - 2 * self.lineSpacing * showCount;
+    CGFloat minHeight = self.frame.size.height - 2 * self.interitemSpacing * showCount;
+    CGFloat minWScale = minWidth / self.frame.size.width;
+    CGFloat minHScale = minHeight / self.frame.size.height;
+    CGFloat yOffset = (self.interitemSpacing / minHScale) * 2 *showCount;
+    CGAffineTransform scaleTransform = CGAffineTransformMakeScale(minWScale, minHScale);
+    CGAffineTransform transform = CGAffineTransformTranslate(scaleTransform, 0, yOffset);
+    cell.transform = transform;
+    
+    [self.containerView insertSubview:cell atIndex:0];
     self.currentIndex = index;
 }
 
 /** 更新布局（动画） */
 - (void)updateLayoutVisibleCellsWithAnimated:(BOOL)animated {
-    CGFloat height = self.frame.size.height - self.interitemSpacing * (self.visibleCount - 1);
+    NSInteger showCount = self.visibleCount - 1;
+    CGFloat minWidth = self.frame.size.width - 2 * self.lineSpacing * showCount;
+    CGFloat minHeight = self.frame.size.height - 2 * self.interitemSpacing * showCount;
+    CGFloat minWScale = minWidth / self.frame.size.width;
+    CGFloat minHScale = minHeight / self.frame.size.height;
+    CGFloat itemWScale = (1.0 - minWScale) / showCount;
+    CGFloat itemHScale = (1.0 - minHScale) / showCount;
     NSInteger count = self.visibleCells.count;
     for (NSInteger i = 0; i < count; i ++) {
-        // 计算出最终效果的frame
+        // 计算出最终效果的transform
         NSInteger showIndex = count - i - 1;
-        CGFloat x = self.lineSpacing * showIndex;
-        CGFloat y = self.interitemSpacing  * showIndex;
-        CGFloat width = self.frame.size.width - 2 * self.lineSpacing * showIndex;
-        CGRect newFrame = CGRectMake(x, y, width, height);
+        CGFloat wScale = 1.0 - showIndex * itemWScale;
+        CGFloat hScale = 1.0 - showIndex * itemHScale;
+        CGFloat y = (self.interitemSpacing / hScale) * 2 * showIndex;
+        CGAffineTransform scaleTransform = CGAffineTransformMakeScale(wScale, hScale);
+        CGAffineTransform transform = CGAffineTransformTranslate(scaleTransform, 0, y);
         // 获取当前要显示的的cells
         GXCardViewCell *cell = self.visibleCells[i];
-        // 显示的最后一个为最上层的cell
+        // 判断是不是当前显示的最后一个(最上层显示)
         BOOL isLast = (i == (count - 1));
         if (isLast) {
             cell.userInteractionEnabled = YES;
@@ -358,23 +365,17 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
             }
         }
         if (animated) {
-            cell.contentView.hidden = YES;
-            [self updateConstraintsCell:cell frame:newFrame isLast:isLast];
+            [self updateConstraintsCell:cell transform:transform];
         } else {
-            cell.frame = newFrame;
+            cell.transform = transform;
         }
     }
 }
 
-- (void)updateConstraintsCell:(GXCardViewCell*)cell frame:(CGRect)frame isLast:(BOOL)isLast {
-    [UIView animateWithDuration:GX_DefaultDuration * 0.7 animations:^{
-        cell.frame = frame;
-    } completion:^(BOOL finished) {
-        cell.contentView.hidden = NO;
-        if (isLast) {
-            [cell removeCellSnapshotView];
-        }
-    }];
+- (void)updateConstraintsCell:(GXCardViewCell*)cell transform:(CGAffineTransform)transform {
+    [UIView animateWithDuration:GX_DefaultDuration animations:^{
+        cell.transform = transform;
+    } completion:NULL];
 }
 
 /** 当前最上层索引 */
@@ -476,5 +477,4 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 }
 
 @end
-
 
