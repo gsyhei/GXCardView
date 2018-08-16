@@ -66,7 +66,9 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
     [self removeCellSnapshotView];
     [self setNeedsLayout];
     [self layoutIfNeeded];
+    self.clipsToBounds = YES;
     UIView *snapshotView = [self snapshotViewAfterScreenUpdates:YES];
+    self.clipsToBounds = NO;
     snapshotView.tag = GX_SNAPSHOTVIEW_TAG;
     snapshotView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     [self addSubview:snapshotView];
@@ -93,32 +95,32 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 
 - (void)panGestureRecognizer:(UIPanGestureRecognizer*)pan {
     switch (pan.state) {
-        case UIGestureRecognizerStateBegan:
+            case UIGestureRecognizerStateBegan:
             self.currentPoint = CGPointZero;
             break;
-        case UIGestureRecognizerStateChanged: {
-            CGPoint movePoint = [pan translationInView:pan.view];
-            self.currentPoint = CGPointMake(self.currentPoint.x + movePoint.x , self.currentPoint.y + movePoint.y);
-            
-            CGFloat moveScale = self.currentPoint.x / self.maxRemoveDistance;
-            if (ABS(moveScale) > 1.0) {
-                moveScale = (moveScale > 0) ? 1.0 : -1.0;
+            case UIGestureRecognizerStateChanged: {
+                CGPoint movePoint = [pan translationInView:pan.view];
+                self.currentPoint = CGPointMake(self.currentPoint.x + movePoint.x , self.currentPoint.y + movePoint.y);
+                
+                CGFloat moveScale = self.currentPoint.x / self.maxRemoveDistance;
+                if (ABS(moveScale) > 1.0) {
+                    moveScale = (moveScale > 0) ? 1.0 : -1.0;
+                }
+                CGFloat angle = GX_DEGREES_TO_RADIANS(self.maxAngle) * moveScale;
+                CGAffineTransform transRotation = CGAffineTransformMakeRotation(angle);
+                self.transform = CGAffineTransformTranslate(transRotation, self.currentPoint.x, self.currentPoint.y);
+                
+                if (self.delegate && [self.delegate respondsToSelector:@selector(cardViewCellDidMoveFromSuperView:forMovePoint:)]) {
+                    [self.delegate cardViewCellDidMoveFromSuperView:self forMovePoint:self.currentPoint];
+                }
+                [pan setTranslation:CGPointZero inView:pan.view];
             }
-            CGFloat angle = GX_DEGREES_TO_RADIANS(self.maxAngle) * moveScale;
-            CGAffineTransform transRotation = CGAffineTransformMakeRotation(angle);
-            self.transform = CGAffineTransformTranslate(transRotation, self.currentPoint.x, self.currentPoint.y);
-            
-            if (self.delegate && [self.delegate respondsToSelector:@selector(cardViewCellDidMoveFromSuperView:forMovePoint:)]) {
-                [self.delegate cardViewCellDidMoveFromSuperView:self forMovePoint:self.currentPoint];
-            }
-            [pan setTranslation:CGPointZero inView:pan.view];
-        }
             break;
-        case UIGestureRecognizerStateEnded:
+            case UIGestureRecognizerStateEnded:
             [self didPanStateEnded];
             break;
-        case UIGestureRecognizerStateCancelled:
-        case UIGestureRecognizerStateFailed:
+            case UIGestureRecognizerStateCancelled:
+            case UIGestureRecognizerStateFailed:
             [self restoreCellLocation];
             break;
         default:
@@ -130,7 +132,7 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 - (void)didPanStateEnded {
     // 右滑移除
     if (self.currentPoint.x > self.maxRemoveDistance) {
-        __block UIView *snapshotView = [self snapshotViewAfterScreenUpdates:YES];
+        __block UIView *snapshotView = [self snapshotViewAfterScreenUpdates:NO];
         snapshotView.transform = self.transform;
         [self.superview.superview addSubview:snapshotView];
         [self didCellRemoveFromSuperview];
@@ -146,7 +148,7 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
     }
     // 左滑移除
     else if (self.currentPoint.x < -self.maxRemoveDistance) {
-        __block UIView *snapshotView = [self snapshotViewAfterScreenUpdates:YES];
+        __block UIView *snapshotView = [self snapshotViewAfterScreenUpdates:NO];
         snapshotView.transform = self.transform;
         [self.superview.superview addSubview:snapshotView];
         [self didCellRemoveFromSuperview];
@@ -188,13 +190,13 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 
 - (void)removeFromSuperviewSwipe:(GXCardCellSwipeDirection)direction {
     switch (direction) {
-        case GXCardCellSwipeDirectionLeft: {
-            [self removeFromSuperviewLeft];
-        }
+            case GXCardCellSwipeDirectionLeft: {
+                [self removeFromSuperviewLeft];
+            }
             break;
-        case GXCardCellSwipeDirectionRight: {
-            [self removeFromSuperviewRight];
-        }
+            case GXCardCellSwipeDirectionRight: {
+                [self removeFromSuperviewRight];
+            }
             break;
         default:
             break;
@@ -203,7 +205,7 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 
 // 向左边移除动画
 - (void)removeFromSuperviewLeft {
-    __block UIView *snapshotView = [self snapshotViewAfterScreenUpdates:YES];
+    __block UIView *snapshotView = [self snapshotViewAfterScreenUpdates:NO];
     [self.superview.superview addSubview:snapshotView];
     [self didCellRemoveFromSuperview];
     
@@ -222,7 +224,7 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 
 // 向右边移除动画
 - (void)removeFromSuperviewRight {
-    __block UIView *snapshotView = [self snapshotViewAfterScreenUpdates:YES];
+    __block UIView *snapshotView = [self snapshotViewAfterScreenUpdates:NO];
     snapshotView.frame = self.frame;
     [self.superview.superview addSubview:snapshotView];
     [self didCellRemoveFromSuperview];
@@ -474,4 +476,5 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 }
 
 @end
+
 
