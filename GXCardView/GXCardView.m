@@ -31,7 +31,7 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 @property (nonatomic, assign) CGFloat maxAngle;
 @property (nonatomic, assign) CGFloat maxRemoveDistance;
 @property (nonatomic, assign) CGPoint currentPoint;
-@property (nonatomic,   weak) id<GXCardViewCellDelagate> delegate;
+@property (nonatomic,   weak) id<GXCardViewCellDelagate> cell_delegate;
 
 - (void)addCellSnapshotView;
 - (void)removeCellSnapshotView;
@@ -43,14 +43,6 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 - (void)awakeFromNib {
     [super awakeFromNib];
     [self setupView];
-}
-
-- (instancetype)initWithCoder:(NSCoder *)coder {
-    self = [super initWithCoder:coder];
-    if (self) {
-        [self setupView];
-    }
-    return self;
 }
 
 - (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier {
@@ -108,8 +100,8 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
             CGAffineTransform transRotation = CGAffineTransformMakeRotation(angle);
             self.transform = CGAffineTransformTranslate(transRotation, self.currentPoint.x, self.currentPoint.y);
             
-            if (self.delegate && [self.delegate respondsToSelector:@selector(cardViewCellDidMoveFromSuperView:forMovePoint:)]) {
-                [self.delegate cardViewCellDidMoveFromSuperView:self forMovePoint:self.currentPoint];
+            if (self.cell_delegate && [self.cell_delegate respondsToSelector:@selector(cardViewCellDidMoveFromSuperView:forMovePoint:)]) {
+                [self.cell_delegate cardViewCellDidMoveFromSuperView:self forMovePoint:self.currentPoint];
             }
             [pan setTranslation:CGPointZero inView:pan.view];
         }
@@ -181,8 +173,8 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 - (void)didCellRemoveFromSuperview {
     self.transform = CGAffineTransformIdentity;
     [self removeFromSuperview];
-    if ([self.delegate respondsToSelector:@selector(cardViewCellDidRemoveFromSuperView:)]) {
-        [self.delegate cardViewCellDidRemoveFromSuperView:self];
+    if ([self.cell_delegate respondsToSelector:@selector(cardViewCellDidRemoveFromSuperView:)]) {
+        [self.cell_delegate cardViewCellDidRemoveFromSuperView:self];
     }
 }
 
@@ -316,7 +308,7 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
     cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     cell.maxRemoveDistance = self.maxRemoveDistance;
     cell.maxAngle = self.maxAngle;
-    cell.delegate = self;
+    cell.cell_delegate = self;
     cell.userInteractionEnabled = NO;
     NSInteger showCount = self.visibleCount - 1;
     CGFloat width = self.frame.size.width;
