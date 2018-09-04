@@ -314,6 +314,9 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
     CGFloat width = self.frame.size.width;
     CGFloat height = self.frame.size.height - (showCount * self.interitemSpacing);
     cell.frame = CGRectMake(0, 0, width, height);
+    [self.containerView insertSubview:cell atIndex:0];
+    [self.containerView layoutIfNeeded];
+    self.currentIndex = index;
     
     CGFloat minWidth = self.frame.size.width - 2 * self.lineSpacing * showCount;
     CGFloat minHeight = self.frame.size.height - 2 * self.interitemSpacing * showCount;
@@ -323,9 +326,6 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
     CGAffineTransform scaleTransform = CGAffineTransformMakeScale(minWScale, minHScale);
     CGAffineTransform transform = CGAffineTransformTranslate(scaleTransform, 0, yOffset);
     cell.transform = transform;
-    
-    [self.containerView insertSubview:cell atIndex:0];
-    self.currentIndex = index;
 }
 
 /** 更新布局（动画） */
