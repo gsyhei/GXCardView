@@ -375,6 +375,12 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
     return self.currentIndex - self.visibleCells.count + 1;
 }
 
+/** 数据源索引转换为对应的显示索引 */
+- (NSInteger)visibleIndexAtIndex:(NSInteger)index {
+    NSInteger visibleIndex = index - self.currentFirstIndex;
+    return visibleIndex;
+}
+
 /** 可视cells */
 - (NSArray<GXCardViewCell *> *)visibleCells {
     return self.containerView.subviews;
@@ -385,6 +391,7 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
     self.nib = nib;
     self.identifier = identifier;
 }
+
 - (void)registerClass:(nullable Class)cellClass forCellReuseIdentifier:(NSString *)identifier {
     self.cellClass = cellClass;
     self.identifier = identifier;
@@ -415,7 +422,7 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 
 /** 获取index对应的cell */
 - (nullable __kindof GXCardViewCell *)cellForRowAtIndex:(NSInteger)index {
-    NSInteger visibleIndex = index - self.currentIndex;
+    NSInteger visibleIndex = [self visibleIndexAtIndex:index];
     GXCardViewCell *cell = [self.visibleCells objectAtIndex:visibleIndex];
     
     return cell;
@@ -469,4 +476,5 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 }
 
 @end
+
 
