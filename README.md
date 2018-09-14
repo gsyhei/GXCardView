@@ -15,7 +15,7 @@ Usage in you Podfile:
 pod 'GXCardView'
 ```
 
-GXCardViewDelegate
+GXCardViewDataSource
 --
 
 ```objc
