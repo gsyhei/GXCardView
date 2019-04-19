@@ -56,16 +56,16 @@
     [cardView reloadDataAnimated:YES];
 }
 
-- (void)cardView:(GXCardView *)cardView didRemoveCell:(GXCardViewCell *)cell forRowAtIndex:(NSInteger)index {
-    NSLog(@"didRemoveCell forRowAtIndex = %ld", index);
+- (void)cardView:(GXCardView *)cardView didRemoveCell:(GXCardViewCell *)cell forRowAtIndex:(NSInteger)index direction:(GXCardCellSwipeDirection)direction {
+    NSLog(@"didRemoveCell forRowAtIndex = %ld, direction = %ld", index, direction);
 }
 
 - (void)cardView:(GXCardView *)cardView didDisplayCell:(GXCardViewCell *)cell forRowAtIndex:(NSInteger)index {
     NSLog(@"didDisplayCell forRowAtIndex = %ld", index);
 }
 
-- (void)cardView:(GXCardView *)cardView didMoveCell:(GXCardViewCell *)cell forMovePoint:(CGPoint)point {
-    //    NSLog(@"move point = %@", NSStringFromCGPoint(point));
+- (void)cardView:(GXCardView *)cardView didMoveCell:(GXCardViewCell *)cell forMovePoint:(CGPoint)point direction:(GXCardCellSwipeDirection)direction {
+        NSLog(@"move point = %@,  direction = %ld", NSStringFromCGPoint(point), direction);
 }
 
 #pragma mark -
