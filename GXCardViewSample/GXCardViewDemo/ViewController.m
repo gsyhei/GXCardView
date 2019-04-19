@@ -41,6 +41,8 @@
 - (GXCardViewCell *)cardView:(GXCardView *)cardView cellForRowAtIndex:(NSInteger)index {
     GXCardItemDemoCell *cell = [cardView dequeueReusableCellWithIdentifier:@"GXCardViewCell"];
     cell.numberLabel.text = [NSString stringWithFormat:@"%ld", (long)index];
+    cell.leftLabel.hidden = YES;
+    cell.rightLabel.hidden = YES;
     cell.layer.cornerRadius = 12.0;
     
     return cell;
@@ -65,7 +67,12 @@
 }
 
 - (void)cardView:(GXCardView *)cardView didMoveCell:(GXCardViewCell *)cell forMovePoint:(CGPoint)point direction:(GXCardCellSwipeDirection)direction {
-        NSLog(@"move point = %@,  direction = %ld", NSStringFromCGPoint(point), direction);
+    GXCardItemDemoCell *dcell = (GXCardItemDemoCell*)cell;
+    
+    dcell.leftLabel.hidden = !(direction == GXCardCellSwipeDirectionRight);
+    dcell.rightLabel.hidden = !(direction == GXCardCellSwipeDirectionLeft);
+
+    NSLog(@"move point = %@,  direction = %ld", NSStringFromCGPoint(point), direction);
 }
 
 #pragma mark -

@@ -12,5 +12,7 @@
 @interface GXCardItemDemoCell : GXCardViewCell
 
 @property (nonatomic, weak) IBOutlet UILabel *numberLabel;
+@property (nonatomic, weak) IBOutlet UILabel *leftLabel;
+@property (nonatomic, weak) IBOutlet UILabel *rightLabel;
 
 @end
