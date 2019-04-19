@@ -479,6 +479,10 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
         else if (cell.currentPoint.x < -cell.maxRemoveDistance) {
             [self.delegate cardView:self didMoveCell:cell forMovePoint:point direction:GXCardCellSwipeDirectionLeft];
         }
+        // 滑动距离不够
+        else {
+             [self.delegate cardView:self didMoveCell:cell forMovePoint:point direction:GXCardCellSwipeDirectionNone];
+        }
     }
 }
 

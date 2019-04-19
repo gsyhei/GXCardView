@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSInteger,GXCardCellSwipeDirection) {
-    GXCardCellSwipeDirectionLeft = 0,
+    GXCardCellSwipeDirectionNone = 0,
+    GXCardCellSwipeDirectionLeft,
     GXCardCellSwipeDirectionRight,
 };
 
