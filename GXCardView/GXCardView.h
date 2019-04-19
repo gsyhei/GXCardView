@@ -13,6 +13,8 @@ typedef NS_ENUM(NSInteger,GXCardCellSwipeDirection) {
     GXCardCellSwipeDirectionRight,
 };
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface GXCardViewCell : UIView
 /** 内容视图 */
 @property (nonatomic, readonly) IBOutlet UIView *contentView;
@@ -38,13 +40,13 @@ typedef NS_ENUM(NSInteger,GXCardCellSwipeDirection) {
 @protocol GXCardViewDelegate<NSObject>
 @optional
 
-- (void)cardView:(GXCardView *)cardView didRemoveCell:(GXCardViewCell *)cell forRowAtIndex:(NSInteger)index;
+- (void)cardView:(GXCardView *)cardView didRemoveCell:(GXCardViewCell *)cell forRowAtIndex:(NSInteger)index direction:(GXCardCellSwipeDirection)direction;
 
 - (void)cardView:(GXCardView *)cardView didRemoveLastCell:(GXCardViewCell *)cell forRowAtIndex:(NSInteger)index;
 
 - (void)cardView:(GXCardView *)cardView didDisplayCell:(GXCardViewCell *)cell forRowAtIndex:(NSInteger)index;
 
-- (void)cardView:(GXCardView *)cardView didMoveCell:(GXCardViewCell *)cell forMovePoint:(CGPoint)point;
+- (void)cardView:(GXCardView *)cardView didMoveCell:(GXCardViewCell *)cell forMovePoint:(CGPoint)point direction:(GXCardCellSwipeDirection)direction;
 
 @end
 
@@ -86,3 +88,4 @@ typedef NS_ENUM(NSInteger,GXCardCellSwipeDirection) {
 
 @end
 
+NS_ASSUME_NONNULL_END

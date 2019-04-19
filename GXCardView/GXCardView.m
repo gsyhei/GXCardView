@@ -22,7 +22,7 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 @class GXCardViewCell;
 @protocol GXCardViewCellDelagate <NSObject>
 @optional
-- (void)cardViewCellDidRemoveFromSuperView:(GXCardViewCell *)cell;
+- (void)cardViewCellDidRemoveFromSuperView:(GXCardViewCell *)cell withDirection:(GXCardCellSwipeDirection)direction;
 - (void)cardViewCellDidMoveFromSuperView:(GXCardViewCell*)cell forMovePoint:(CGPoint)point;
 @end
 
@@ -125,7 +125,7 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
         __block UIView *snapshotView = [self snapshotViewAfterScreenUpdates:NO];
         snapshotView.transform = self.transform;
         [self.superview.superview addSubview:snapshotView];
-        [self didCellRemoveFromSuperview];
+        [self didCellRemoveFromSuperviewWithDirection:GXCardCellSwipeDirectionRight];
         
         CGFloat endCenterX = SCREEN_WIDTH/2 + self.frame.size.width * 1.5;
         [UIView animateWithDuration:GX_DefaultDuration animations:^{
@@ -141,7 +141,7 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
         __block UIView *snapshotView = [self snapshotViewAfterScreenUpdates:NO];
         snapshotView.transform = self.transform;
         [self.superview.superview addSubview:snapshotView];
-        [self didCellRemoveFromSuperview];
+        [self didCellRemoveFromSuperviewWithDirection:GXCardCellSwipeDirectionLeft];
         
         CGFloat endCenterX = -(SCREEN_WIDTH/2 + self.frame.size.width);
         [UIView animateWithDuration:GX_DefaultDuration animations:^{
@@ -170,11 +170,11 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 }
 
 // 卡片移除处理
-- (void)didCellRemoveFromSuperview {
+- (void)didCellRemoveFromSuperviewWithDirection:(GXCardCellSwipeDirection)direction {
     self.transform = CGAffineTransformIdentity;
     [self removeFromSuperview];
-    if ([self.cell_delegate respondsToSelector:@selector(cardViewCellDidRemoveFromSuperView:)]) {
-        [self.cell_delegate cardViewCellDidRemoveFromSuperView:self];
+    if ([self.cell_delegate respondsToSelector:@selector(cardViewCellDidRemoveFromSuperView:withDirection:)]) {
+        [self.cell_delegate cardViewCellDidRemoveFromSuperView:self withDirection:direction];
     }
 }
 
@@ -197,7 +197,7 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 - (void)removeFromSuperviewLeft {
     __block UIView *snapshotView = [self snapshotViewAfterScreenUpdates:NO];
     [self.superview.superview addSubview:snapshotView];
-    [self didCellRemoveFromSuperview];
+    [self didCellRemoveFromSuperviewWithDirection:GXCardCellSwipeDirectionLeft];
     
     CGAffineTransform transRotation = CGAffineTransformMakeRotation(-GX_DEGREES_TO_RADIANS(self.maxAngle));
     CGAffineTransform transform = CGAffineTransformTranslate(transRotation, 0, self.frame.size.height/4.0);
@@ -217,7 +217,7 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
     __block UIView *snapshotView = [self snapshotViewAfterScreenUpdates:NO];
     snapshotView.frame = self.frame;
     [self.superview.superview addSubview:snapshotView];
-    [self didCellRemoveFromSuperview];
+    [self didCellRemoveFromSuperviewWithDirection:GXCardCellSwipeDirectionRight];
     
     CGAffineTransform transRotation = CGAffineTransformMakeRotation(GX_DEGREES_TO_RADIANS(self.maxAngle));
     CGAffineTransform transform = CGAffineTransformTranslate(transRotation, 0, self.frame.size.height/4.0);
@@ -444,13 +444,13 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 
 #pragma mark - GXCardViewCellDelagate
 
-- (void)cardViewCellDidRemoveFromSuperView:(GXCardViewCell *)cell {
+- (void)cardViewCellDidRemoveFromSuperView:(GXCardViewCell *)cell withDirection:(GXCardCellSwipeDirection)direction {
     // 当cell被移除时重新刷新视图
     [self.reusableCells addObject:cell];
     
     // 通知代理 移除了当前cell
-    if ([self.delegate respondsToSelector:@selector(cardView:didRemoveCell:forRowAtIndex:)]) {
-        [self.delegate cardView:self didRemoveCell:cell forRowAtIndex:self.currentFirstIndex];
+    if ([self.delegate respondsToSelector:@selector(cardView:didRemoveCell:forRowAtIndex:direction:)]) {
+        [self.delegate cardView:self didRemoveCell:cell forRowAtIndex:self.currentFirstIndex direction:direction];
     }
     
     NSInteger count = [self.dataSource numberOfCountInCardView:self];
@@ -470,8 +470,15 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 }
 
 - (void)cardViewCellDidMoveFromSuperView:(GXCardViewCell *)cell forMovePoint:(CGPoint)point {
-    if ([self.delegate respondsToSelector:@selector(cardView:didMoveCell:forMovePoint:)]) {
-        [self.delegate cardView:self didMoveCell:cell forMovePoint:point];
+    if ([self.delegate respondsToSelector:@selector(cardView:didMoveCell:forMovePoint:direction:)]) {
+        // 右滑中
+        if (cell.currentPoint.x > cell.maxRemoveDistance) {
+            [self.delegate cardView:self didMoveCell:cell forMovePoint:point direction:GXCardCellSwipeDirectionRight];
+        }
+        // 左滑中
+        else if (cell.currentPoint.x < -cell.maxRemoveDistance) {
+            [self.delegate cardView:self didMoveCell:cell forMovePoint:point direction:GXCardCellSwipeDirectionLeft];
+        }
     }
 }
 
