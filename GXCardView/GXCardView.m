@@ -274,6 +274,7 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
     _maxAngle          = 15;
     _maxRemoveDistance = SCREEN_WIDTH / 4.0;
     _reusableCells     = [NSMutableArray array];
+    _isRepeat          = NO;
 }
 
 - (UIView *)containerView {
@@ -295,9 +296,24 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
     [self.containerView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
     NSInteger maxCount = [self.dataSource numberOfCountInCardView:self];
+    maxCount = self.isRepeat ? (maxCount + self.visibleCount - 1) : maxCount;
     NSInteger showNumber = MIN(maxCount, self.visibleCount);
     for (int i = 0; i < showNumber; i++) {
         [self createCardViewCellWithIndex:i];
+    }
+    [self updateLayoutVisibleCellsWithAnimated:animated];
+}
+
+- (void)reloadDataRepeatAnimated:(BOOL)animated {
+    self.currentIndex = 0;
+    [self.reusableCells removeAllObjects];
+    [self.containerView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    
+    NSInteger maxCount = [self.dataSource numberOfCountInCardView:self];
+    maxCount = self.isRepeat ? (maxCount + self.visibleCount - 1) : maxCount;
+    NSInteger showNumber = MIN(maxCount, self.visibleCount);
+    for (int i = 0; i < showNumber; i++) {
+        [self createRepeatCardViewCellWithIndex:i];
     }
     [self updateLayoutVisibleCellsWithAnimated:animated];
 }
@@ -311,6 +327,32 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
     cell.cell_delegate = self;
     cell.userInteractionEnabled = NO;
     NSInteger showCount = self.visibleCount - 1;
+    CGFloat width = self.frame.size.width;
+    CGFloat height = self.frame.size.height - (showCount * self.interitemSpacing);
+    cell.frame = CGRectMake(0, 0, width, height);
+    [self.containerView insertSubview:cell atIndex:0];
+    [self.containerView layoutIfNeeded];
+    self.currentIndex = index;
+    
+    CGFloat minWidth = self.frame.size.width - 2 * self.lineSpacing * showCount;
+    CGFloat minHeight = self.frame.size.height - 2 * self.interitemSpacing * showCount;
+    CGFloat minWScale = minWidth / self.frame.size.width;
+    CGFloat minHScale = minHeight / self.frame.size.height;
+    CGFloat yOffset = (self.interitemSpacing / minHScale) * 2 *showCount;
+    CGAffineTransform scaleTransform = CGAffineTransformMakeScale(minWScale, minHScale);
+    CGAffineTransform transform = CGAffineTransformTranslate(scaleTransform, 0, yOffset);
+    cell.transform = transform;
+}
+
+/** repeat为YES创建新的cell */
+- (void)createRepeatCardViewCellWithIndex:(NSInteger)index {
+    GXCardViewCell *cell = [self.dataSource cardView:self cellForRowAtIndex:index];
+    cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+    cell.maxRemoveDistance = self.maxRemoveDistance;
+    cell.maxAngle = self.maxAngle;
+    cell.cell_delegate = self;
+    cell.userInteractionEnabled = NO;
+    NSInteger showCount = self.visibleCount;
     CGFloat width = self.frame.size.width;
     CGFloat height = self.frame.size.height - (showCount * self.interitemSpacing);
     cell.frame = CGRectMake(0, 0, width, height);
@@ -461,9 +503,21 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
         }
         return;
     }
-    // 当前数据源还有数据 继续创建cell
-    if (self.currentIndex < count - 1) {
-        [self createCardViewCellWithIndex:(self.currentIndex + 1)];
+    if (self.isRepeat) {
+        NSInteger reCount = self.isRepeat ? (count + self.visibleCount - 1) : count;
+        if (self.currentIndex < reCount - 1) {
+            // 当前数据源还有数据 继续创建cell
+            [self createCardViewCellWithIndex:(self.currentIndex + 1) % count];
+        } else {
+            // 如果是重复的情况下需要加载到最后一张就重载
+            [self reloadDataRepeatAnimated:YES];
+        }
+    }
+    else {
+        // 当前数据源还有数据 继续创建cell
+        if (self.currentIndex < count - 1) {
+            [self createCardViewCellWithIndex:(self.currentIndex + 1)];
+        }
     }
     // 更新布局
     [self updateLayoutVisibleCellsWithAnimated:YES];

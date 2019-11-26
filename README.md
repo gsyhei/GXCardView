@@ -59,6 +59,8 @@ GXCardViewDelegate
 @property (nonatomic, assign) CGFloat maxAngle;
 /** 最大移除距离(默认屏幕的1/4) */
 @property (nonatomic, assign) CGFloat maxRemoveDistance;
+/** 是否重复(默认NO) */
+@property (nonatomic, assign) BOOL isRepeat;
 ```
 
 License

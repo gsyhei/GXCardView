@@ -27,6 +27,7 @@
     self.cardView.interitemSpacing = 10.0;
     self.cardView.maxAngle = 15.0;
     self.cardView.maxRemoveDistance = 100.0;
+    self.cardView.isRepeat = YES; // 新加入
     [self.cardView registerNib:[UINib nibWithNibName:NSStringFromClass([GXCardItemDemoCell class]) bundle:nil] forCellReuseIdentifier:@"GXCardViewCell"];
     [self.cardView reloadData];
 }
@@ -55,7 +56,9 @@
 #pragma mark - GXCardViewDelegate
 
 - (void)cardView:(GXCardView *)cardView didRemoveLastCell:(GXCardViewCell *)cell forRowAtIndex:(NSInteger)index {
-    [cardView reloadDataAnimated:YES];
+    if (!cardView.isRepeat) {
+        [cardView reloadDataAnimated:YES];
+    }
 }
 
 - (void)cardView:(GXCardView *)cardView didRemoveCell:(GXCardViewCell *)cell forRowAtIndex:(NSInteger)index direction:(GXCardCellSwipeDirection)direction {
