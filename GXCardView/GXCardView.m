@@ -31,6 +31,7 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 @property (nonatomic, assign) CGFloat maxAngle;
 @property (nonatomic, assign) CGFloat maxRemoveDistance;
 @property (nonatomic, assign) CGPoint currentPoint;
+@property (nonatomic, assign) NSInteger index;
 @property (nonatomic,   weak) id<GXCardViewCellDelagate> cell_delegate;
 
 - (void)addCellSnapshotView;
@@ -321,6 +322,7 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 /** 创建新的cell */
 - (void)createCardViewCellWithIndex:(NSInteger)index {
     GXCardViewCell *cell = [self.dataSource cardView:self cellForRowAtIndex:index];
+    cell.index = index;
     cell.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     cell.maxRemoveDistance = self.maxRemoveDistance;
     cell.maxAngle = self.maxAngle;
@@ -395,7 +397,7 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
         if (isLast) {
             cell.userInteractionEnabled = YES;
             if ([self.delegate respondsToSelector:@selector(cardView:didDisplayCell:forRowAtIndex:)]) {
-                [self.delegate cardView:self didDisplayCell:cell forRowAtIndex:(self.currentIndex-i)];
+                [self.delegate cardView:self didDisplayCell:cell forRowAtIndex:cell.index];
             }
         }
         if (animated) {
@@ -414,11 +416,22 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 
 /** 当前最上层索引 */
 - (NSInteger)currentFirstIndex {
-    return self.currentIndex - self.visibleCells.count + 1;
+    NSInteger index = self.currentIndex - self.visibleCells.count + 1;
+    if (self.isRepeat) {
+        if (index < 0) {
+            index = index + [self.dataSource numberOfCountInCardView:self];
+        }
+    }
+    return index;
 }
 
 /** 数据源索引转换为对应的显示索引 */
 - (NSInteger)visibleIndexAtIndex:(NSInteger)index {
+    if (self.isRepeat) {
+        if (index < self.currentFirstIndex) {
+            return index + [self.dataSource numberOfCountInCardView:self] - self.currentFirstIndex;
+        }
+    }
     NSInteger visibleIndex = index - self.currentFirstIndex;
     return visibleIndex;
 }
@@ -459,22 +472,23 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
         
         return cell;
     }
+    NSLog(@"请先注册cardCell!");
     return nil;
 }
 
 /** 获取index对应的cell */
 - (nullable __kindof GXCardViewCell *)cellForRowAtIndex:(NSInteger)index {
     NSInteger visibleIndex = [self visibleIndexAtIndex:index];
-    GXCardViewCell *cell = [self.visibleCells objectAtIndex:visibleIndex];
-    
-    return cell;
+    if (visibleIndex >= 0 && visibleIndex < self.visibleCells.count) {
+        GXCardViewCell *cell = [self.visibleCells objectAtIndex:visibleIndex];
+        return cell;
+    }
+    return nil;
 }
 
 /** 获取cell对应的index */
 - (NSInteger)indexForCell:(GXCardViewCell *)cell {
-    NSInteger visibleIndex = [self.visibleCells indexOfObject:cell];
-    
-    return (self.currentIndex - visibleIndex);
+    return cell.index;
 }
 
 /** 移除最上层cell */
@@ -492,14 +506,14 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
     
     // 通知代理 移除了当前cell
     if ([self.delegate respondsToSelector:@selector(cardView:didRemoveCell:forRowAtIndex:direction:)]) {
-        [self.delegate cardView:self didRemoveCell:cell forRowAtIndex:self.currentFirstIndex direction:direction];
+        [self.delegate cardView:self didRemoveCell:cell forRowAtIndex:cell.index direction:direction];
     }
     
     NSInteger count = [self.dataSource numberOfCountInCardView:self];
     // 移除后的卡片是最后一张(没有更多)
     if(self.visibleCells.count == 0) { // 只有最后一张卡片的时候
         if ([self.delegate respondsToSelector:@selector(cardView:didRemoveLastCell:forRowAtIndex:)]) {
-            [self.delegate cardView:self didRemoveLastCell:cell forRowAtIndex:self.currentIndex];
+            [self.delegate cardView:self didRemoveLastCell:cell forRowAtIndex:cell.index];
         }
         return;
     }
