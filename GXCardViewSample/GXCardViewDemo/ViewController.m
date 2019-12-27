@@ -12,6 +12,7 @@
 
 @interface ViewController ()<GXCardViewDataSource, GXCardViewDelegate, UITableViewDelegate>
 @property (nonatomic, weak) IBOutlet GXCardView *cardView;
+@property (nonatomic, assign) NSInteger cellCount;
 @end
 
 @implementation ViewController
@@ -19,6 +20,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     //    self.view.backgroundColor = [UIColor colorWithWhite:0.94 alpha:1];
+    self.cellCount = 10;
     
     self.cardView.dataSource = self;
     self.cardView.delegate = self;
@@ -27,7 +29,7 @@
     self.cardView.interitemSpacing = 10.0;
     self.cardView.maxAngle = 15.0;
     self.cardView.maxRemoveDistance = 100.0;
-    self.cardView.isRepeat = YES; // 新加入
+//    self.cardView.isRepeat = YES; // 新加入
     [self.cardView registerNib:[UINib nibWithNibName:NSStringFromClass([GXCardItemDemoCell class]) bundle:nil] forCellReuseIdentifier:@"GXCardViewCell"];
     [self.cardView reloadData];
 }
@@ -50,7 +52,7 @@
 }
 
 - (NSInteger)numberOfCountInCardView:(UITableView *)cardView {
-    return 10;
+    return self.cellCount;
 }
 
 #pragma mark - GXCardViewDelegate
@@ -63,6 +65,11 @@
 
 - (void)cardView:(GXCardView *)cardView didRemoveCell:(GXCardViewCell *)cell forRowAtIndex:(NSInteger)index direction:(GXCardCellSwipeDirection)direction {
     NSLog(@"didRemoveCell forRowAtIndex = %ld, direction = %ld", index, direction);
+    
+    if (!cardView.isRepeat && index == 8) {
+        self.cellCount = 15;
+        [cardView reloadMoreDataAnimated:YES];
+    }
 }
 
 - (void)cardView:(GXCardView *)cardView didDisplayCell:(GXCardViewCell *)cell forRowAtIndex:(NSInteger)index {

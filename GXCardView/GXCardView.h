@@ -77,6 +77,12 @@ NS_ASSUME_NONNULL_BEGIN
 /** 重载数据 */
 - (void)reloadData;
 - (void)reloadDataAnimated:(BOOL)animated;
+/** 加载更多数据 */
+- (void)reloadMoreData;
+- (void)reloadMoreDataAnimated:(BOOL)animated;
+/** 从index开始加载 */
+- (void)reloadDataFormIndex:(NSInteger)index;
+- (void)reloadDataFormIndex:(NSInteger)index animated:(BOOL)animated;
 /** 注册cell */
 - (void)registerNib:(nullable UINib *)nib forCellReuseIdentifier:(NSString *)identifier;
 - (void)registerClass:(nullable Class)cellClass forCellReuseIdentifier:(NSString *)identifier;

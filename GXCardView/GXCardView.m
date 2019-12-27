@@ -319,6 +319,38 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
     [self updateLayoutVisibleCellsWithAnimated:animated];
 }
 
+- (void)reloadMoreData {
+    [self reloadMoreDataAnimated:NO];
+}
+
+- (void)reloadMoreDataAnimated:(BOOL)animated {
+    NSAssert(!self.isRepeat, @"isRepeat为YES不允许加载更多数据！");
+    [self.reusableCells removeAllObjects];
+    NSInteger loadMoreCount = self.visibleCount - self.visibleCells.count;
+    NSInteger loadMaxLength = self.currentIndex + loadMoreCount;
+    for (NSInteger i = self.currentIndex + 1; i < loadMaxLength; i++) {
+        [self createCardViewCellWithIndex:i];
+    }
+    [self updateLayoutVisibleCellsWithAnimated:animated];
+}
+
+- (void)reloadDataFormIndex:(NSInteger)index {
+    [self reloadDataFormIndex:index animated:NO];
+}
+
+- (void)reloadDataFormIndex:(NSInteger)index animated:(BOOL)animated {
+    NSAssert(!self.isRepeat, @"isRepeat为YES不允许从索引处加载！");
+    [self.reusableCells removeAllObjects];
+    NSInteger maxCount = [self.dataSource numberOfCountInCardView:self];
+    NSAssert(index >= maxCount, @"index不能大于等于cell的数量！");
+    NSInteger loadMaxLength = index + self.visibleCount;
+    loadMaxLength = MIN(loadMaxLength, maxCount);
+    for (NSInteger i = index; i < loadMaxLength; i++) {
+        [self createCardViewCellWithIndex:i];
+    }
+    [self updateLayoutVisibleCellsWithAnimated:animated];
+}
+
 /** 创建新的cell */
 - (void)createCardViewCellWithIndex:(NSInteger)index {
     GXCardViewCell *cell = [self.dataSource cardView:self cellForRowAtIndex:index];
