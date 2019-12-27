@@ -45,6 +45,23 @@ GXCardViewDelegate
 - (void)reloadDataAnimated:(BOOL)animated;
 ```
 
+加载更多数据 
+--
+
+```objc
+- (void)reloadMoreData;
+- (void)reloadMoreDataAnimated:(BOOL)animated;
+```
+
+从index开始加载 
+--
+
+```objc
+- (void)reloadDataFormIndex:(NSInteger)index;
+- (void)reloadDataFormIndex:(NSInteger)index animated:(BOOL)animated;
+```
+
+
 可以设置参数
 --
 
