@@ -3,6 +3,12 @@
 
 # 喜欢就给个star哦，QQ：279694479
 
+先上demo菜单效果（比较朴素，请别在意）
+--
+
+![](/GXCardView.gif '描述')
+
+
 Requirements
 --
 - iOS 7.0 or later
