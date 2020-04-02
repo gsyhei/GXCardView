@@ -17,8 +17,6 @@ typedef NS_ENUM(NSInteger,GXCardCellSwipeDirection) {
 NS_ASSUME_NONNULL_BEGIN
 
 @interface GXCardViewCell : UIView
-/** 内容视图 */
-@property (nonatomic, readonly) IBOutlet UIView *contentView;
 /** 重用标识 */
 @property (nonatomic, copy) NSString *reuseIdentifier;
 /** 指定初始化方法 */

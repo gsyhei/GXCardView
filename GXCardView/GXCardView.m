@@ -10,8 +10,6 @@
 
 #define SCREEN_WIDTH [UIScreen mainScreen].bounds.size.width
 #define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
-
-#define GX_SNAPSHOTVIEW_TAG           999
 #define GX_DEGREES_TO_RADIANS(angle)  (angle / 180.0 * M_PI)
 
 static CGFloat const GX_DefaultDuration    = 0.25f;
@@ -27,15 +25,11 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 @end
 
 @interface GXCardViewCell()
-@property (nonatomic, strong) IBOutlet UIView *contentView;
 @property (nonatomic, assign) CGFloat maxAngle;
 @property (nonatomic, assign) CGFloat maxRemoveDistance;
 @property (nonatomic, assign) CGPoint currentPoint;
 @property (nonatomic, assign) NSInteger index;
 @property (nonatomic,   weak) id<GXCardViewCellDelagate> cell_delegate;
-
-- (void)addCellSnapshotView;
-- (void)removeCellSnapshotView;
 
 @end
 
@@ -55,31 +49,7 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
     return self;
 }
 
-- (void)addCellSnapshotView {
-    [self removeCellSnapshotView];
-    [self setNeedsLayout];
-    [self layoutIfNeeded];
-    UIView *snapshotView = [self snapshotViewAfterScreenUpdates:YES];
-    snapshotView.tag = GX_SNAPSHOTVIEW_TAG;
-    snapshotView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-    [self addSubview:snapshotView];
-    [self bringSubviewToFront:snapshotView];
-}
-
-- (void)removeCellSnapshotView {
-    UIView *snapshotView = [self viewWithTag:GX_SNAPSHOTVIEW_TAG];
-    if (snapshotView) {
-        [snapshotView removeFromSuperview];
-    }
-}
-
 - (void)setupView {
-    if (!_contentView) {
-        _contentView = [[UIView alloc] initWithFrame:self.bounds];
-        _contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-        [self addSubview:_contentView];
-    }
-    self.contentView.clipsToBounds = YES;
     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureRecognizer:)];
     [self addGestureRecognizer:pan];
 }
