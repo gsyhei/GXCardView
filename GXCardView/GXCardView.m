@@ -310,9 +310,11 @@ static CGFloat const GX_SpringVelocity     = 0.8f;
 
 - (void)reloadDataFormIndex:(NSInteger)index animated:(BOOL)animated {
     NSAssert(!self.isRepeat, @"isRepeat为YES不允许从索引处加载！");
-    [self.reusableCells removeAllObjects];
     NSInteger maxCount = [self.dataSource numberOfCountInCardView:self];
-    NSAssert(index >= maxCount, @"index不能大于等于cell的数量！");
+    NSAssert(index < maxCount, @"index不能大于等于cell的数量！");
+    
+    [self.reusableCells removeAllObjects];
+    [self.containerView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     NSInteger loadMaxLength = index + self.visibleCount;
     loadMaxLength = MIN(loadMaxLength, maxCount);
     for (NSInteger i = index; i < loadMaxLength; i++) {

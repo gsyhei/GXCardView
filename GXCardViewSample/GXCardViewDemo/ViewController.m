@@ -89,6 +89,7 @@
 
 - (IBAction)leftButtonClick:(id)sender {
     [self.cardView removeTopCardViewFromSwipe:GXCardCellSwipeDirectionLeft];
+//    [self.cardView reloadDataFormIndex:2 animated:YES];
 }
 
 - (IBAction)rightButtonClick:(id)sender {
