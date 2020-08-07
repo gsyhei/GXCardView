@@ -20,6 +20,10 @@ Usage in you Podfile:
 ```
 pod 'GXCardView'
 ```
+* 其它版本 [OC版本](https://github.com/gsyhei/GXCardView)
+```
+pod 'GXCardView-Swift'
+```
 
 GXCardViewDataSource
 --
