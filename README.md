@@ -8,7 +8,7 @@
 先上demo菜单效果
 --
 <p align="center">
-<img src="https://github.com/gsyhei/GXCardView-Swift/blob/master/GXCardView-Swift.gif">
+<img src="https://github.com/gsyhei/GXCardView/blob/master/GXCardView.gif">
 </p>
 
 Requirements
