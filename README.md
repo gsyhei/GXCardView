@@ -1,18 +1,23 @@
 # GXCardView
-卡片式布局(探探附近/QQ配对)，跟tableView一个用法，根据网友反应已经添加了重复循环属性，最新还添加了平滑加载更多数据。有建议可以联系QQ：279694479。
+卡片式布局(探探附近/QQ配对)，可以设置卡片堆叠效果，可以设置循环效果。
+有建议可以联系QQ交流群:1101980843，喜欢就给个star哦，谢谢关注！
+<p align="center">
+<img src="https://github.com/gsyhei/GXCardView-Swift/blob/master/QQ.jpeg">
+</p>
 
-# 喜欢就给个star哦，QQ：279694479
-
-先上demo菜单效果（比较朴素，请别在意）
+先上demo菜单效果
 --
-
-![](/GXCardView.gif '描述')
-
+<p align="center">
+<img src="https://github.com/gsyhei/GXCardView-Swift/blob/master/GXCardView-Swift.gif">
+</p>
 
 Requirements
 --
-- iOS 7.0 or later
-- Xcode 9.0 or later
+<p align="left">
+<a href="https://github.com/gsyhei/GXCardView-Swift"><img src="https://img.shields.io/badge/platform-ios%209.0-yellow.svg"></a>
+<a href="https://github.com/gsyhei/GXCardView-Swift"><img src="https://img.shields.io/github/license/johnlui/Pitaya.svg?style=flat"></a>
+<a href="https://github.com/gsyhei/GXCardView-Swift"><img src="https://img.shields.io/badge/language-Swift%204.2-orange.svg"></a>
+</p>
 
 Usage in you Podfile:
 --
