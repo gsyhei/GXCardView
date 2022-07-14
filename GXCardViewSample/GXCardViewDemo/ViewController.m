@@ -20,7 +20,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     //    self.view.backgroundColor = [UIColor colorWithWhite:0.94 alpha:1];
-    self.cellCount = 10;
+    self.cellCount = 10; // card总数
     
     self.cardView.dataSource = self;
     self.cardView.delegate = self;
@@ -29,7 +29,7 @@
     self.cardView.interitemSpacing = 10.0;
     self.cardView.maxAngle = 15.0;
     self.cardView.maxRemoveDistance = 100.0;
-//    self.cardView.isRepeat = YES; // 新加入
+    self.cardView.isRepeat = YES; // cellCount < visibleCount的情况下不能为YES
     [self.cardView registerNib:[UINib nibWithNibName:NSStringFromClass([GXCardItemDemoCell class]) bundle:nil] forCellReuseIdentifier:@"GXCardViewCell"];
     [self.cardView reloadData];
 }
